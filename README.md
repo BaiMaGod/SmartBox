@@ -16,7 +16,6 @@
 #### 1.导入jar包，仅一个：
 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SmartBox-1.0-SNAPSHOT.jar
 
-（可从target文件夹中找到）
 
 #### 2.配置文件，指定必须是box.xml（目前仅支持xml文件配置），内容如下
 
