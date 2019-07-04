@@ -14,16 +14,26 @@
 
 ### 细节：
 #### 1.导入jar包，仅一个：
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SmartBox-1.0-SNAPSHOT.jar
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SmartBox-1.x.x-xxx.jar
 
-(可从lib文件夹下找到)
+(可从download文件夹下找到)
 
 #### 2.配置文件，指定必须是box.xml（目前仅支持xml文件配置），内容如下
 
+##### 1. 简单配置：
 
     <beans>
         <bean id="userDao" class="com.dao.Impl.UserDaoImpl"></bean>
         <bean id="userService" class="com.service.Impl.UserServiceImpl"></bean>
+    </beans>
+    
+##### 2. 可为bean添加依赖关系，box将会自动帮你在实例化bean的时候注入值
+
+    <beans>
+        <bean id="userDao" class="com.dao.Impl.UserDaoImpl"></bean>
+        <bean id="userService" class="com.service.Impl.UserServiceImpl">
+            <property name="userDao" ref="userDao"></property>
+        </bean>
     </beans>
     
 <br>&nbsp;&nbsp;&nbsp;&nbsp;    注意：目前box.xml的位置仅支持在maven项目的resource目录下
