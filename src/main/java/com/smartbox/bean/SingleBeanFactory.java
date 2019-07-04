@@ -1,7 +1,7 @@
-package com.baima.bean;
+package com.smartbox.bean;
 
-import com.baima.exception.BeanFactoryException;
-import com.baima.exception.SimpleFactoryException;
+import com.smartbox.exception.BeanFactoryException;
+import com.smartbox.exception.SimpleFactoryException;
 
 import java.util.List;
 

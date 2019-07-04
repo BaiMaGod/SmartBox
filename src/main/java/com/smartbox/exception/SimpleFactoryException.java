@@ -1,4 +1,4 @@
-package com.baima.exception;
+package com.smartbox.exception;
 
 public class SimpleFactoryException extends BeanFactoryException{
     public SimpleFactoryException(){

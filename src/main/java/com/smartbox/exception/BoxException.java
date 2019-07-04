@@ -1,4 +1,4 @@
-package com.baima.exception;
+package com.smartbox.exception;
 
 public class BoxException extends Exception{
     public BoxException(){

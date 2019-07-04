@@ -1,4 +1,4 @@
-package com.baima.bean;
+package com.smartbox.bean;
 
 import java.util.HashMap;
 
@@ -22,9 +22,9 @@ public class BeanInfo {
     private Object object;
 
     /**
-     * 属性，key为属性字段名，value为类型名
+     * 属性，key为属性字段名，value为PropertyInfo对象
      */
-    private HashMap<String,String> properties;
+    private HashMap<String,PropertyInfo> properties;
 
 
     public String getId() {
@@ -51,11 +51,11 @@ public class BeanInfo {
         this.object = object;
     }
 
-    public HashMap<String, String> getProperties() {
+    public HashMap<String, PropertyInfo> getProperties() {
         return properties;
     }
 
-    public void setProperties(HashMap<String, String> properties) {
+    public void setProperties(HashMap<String, PropertyInfo> properties) {
         this.properties = properties;
     }
 

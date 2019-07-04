@@ -1,7 +1,7 @@
-package com.baima.bean;
+package com.smartbox.bean;
 
 
-import com.baima.config.XmlConfigReader;
+import com.smartbox.config.XmlConfigReader;
 
 public class BoxFactory implements Factory{
     private static BoxFactory boxFactory;
