@@ -1,7 +1,7 @@
-package com.smartbox.bean;
+package com.smartbox.core.bean;
 
 
-import com.smartbox.config.XmlConfigReader;
+import com.smartbox.core.config.XmlConfigReader;
 
 public class BoxFactory implements Factory{
     private static BoxFactory boxFactory;

@@ -1,6 +1,7 @@
-package com.smartbox.box;
+package com.smartbox.core.box;
 
-import com.smartbox.exception.BoxException;
+import com.smartbox.core.config.BeanConfig;
+import com.smartbox.core.exception.BoxException;
 
 /**
  *  这是所有Box容器类的祖先接口，定义box容器的规范
@@ -15,6 +16,14 @@ public interface Box {
      * @param object 要加入容器的对象
      */
     void addBean(String id, String className, Object object) throws BoxException;
+
+
+    /**
+     * 向box容器中加入一个bean对象，由box容器管理起来
+     * @param beanConfig bean包装的配置对象
+     * @throws BoxException
+     */
+    void addBean(BeanConfig beanConfig) throws BoxException;
 
     /**
      * 从box容器中获取一个对象
@@ -48,4 +57,6 @@ public interface Box {
      * @param clazz  要移除对象的Class对象
      */
     void removeBean(Class clazz) throws BoxException;
+
+    void checkBean();
 }

@@ -1,8 +1,6 @@
-package com.smartbox.config;
+package com.smartbox.core.config;
 
-import com.smartbox.bean.BeanInfo;
-import com.smartbox.bean.PropertyInfo;
-import com.smartbox.exception.XmlConfigException;
+import com.smartbox.core.exception.XmlConfigException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -13,13 +11,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class XmlConfigReader implements ConfigReader{
     private static XmlConfigReader xmlConfigReader;
-
-    private Document document;
 
     private XmlConfigReader(){}
 
@@ -33,23 +28,43 @@ public class XmlConfigReader implements ConfigReader{
     }
 
     @Override
-    public void loadConfig(String path) throws XmlConfigException {
+    public BoxConfig loadConfig(String path) throws XmlConfigException {
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+
+        BoxConfig config = new BoxConfig();
+
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            document = documentBuilder.parse(path);
+            Document document = documentBuilder.parse(path);
 
 
+            config.setBasePackages(readComponentScan(document));
+            config.setBeanConfigs(readBean(document));
         } catch (ParserConfigurationException|SAXException|IOException e) {
             e.printStackTrace();
             throw new XmlConfigException("xml配置文件加载失败，请xml检查配置文件是否合法");
         }
 
+        return config;
     }
 
-    @Override
-    public List<BeanInfo> readConfig() throws XmlConfigException {
-        List<BeanInfo> beanInfos = new ArrayList<>();
+    public List<String> readComponentScan(Document document) throws XmlConfigException {
+        List<String> basePackages = new ArrayList<>();
+
+        NodeList elements = document.getElementsByTagName("component-scan");
+
+        for (int i = 0; i < elements.getLength(); i++) {
+            Element item = (Element) elements.item(i);
+            String basePackage = item.getAttribute("basePackage");
+
+            basePackages.add(basePackage);
+        }
+
+        return basePackages;
+    }
+
+    public List<BeanConfig> readBean(Document document) throws XmlConfigException {
+        List<BeanConfig> beanConfigs = new ArrayList<>();
         //读取要加入到Box容器中的bean
         NodeList beans = document.getElementsByTagName("bean");
 
@@ -57,15 +72,15 @@ public class XmlConfigReader implements ConfigReader{
         for (int i = 0; i < beans.getLength(); i++) {
             Element element = (Element) beans.item(i);
 
-            beanInfos.add(analysisBean(element));
+            beanConfigs.add(analysisBean(element));
         }
 
-        return beanInfos;
+        return beanConfigs;
     }
 
 
-    private BeanInfo analysisBean(Element element) throws XmlConfigException {
-        BeanInfo beanInfo = new BeanInfo();
+    public BeanConfig analysisBean(Element element) throws XmlConfigException {
+        BeanConfig beanConfig = new BeanConfig();
 
         // element.getAttribute（String name）方法，如果没有该属性，返回空串
         String id = element.getAttribute("id");
@@ -86,15 +101,15 @@ public class XmlConfigReader implements ConfigReader{
             throw new XmlConfigException("bean 的class 为空!");
         }
 
-        beanInfo.setId(id);
-        beanInfo.setClassName(className);
-        beanInfo.setProperties(analysisBeanProperties(element));
+        beanConfig.setId(id);
+        beanConfig.setClassName(className);
+        beanConfig.setProperties(analysisBeanProperties(element));
 
-        return  beanInfo;
+        return  beanConfig;
     }
 
-    private HashMap<String, PropertyInfo> analysisBeanProperties(Element element) throws XmlConfigException {
-        HashMap<String,PropertyInfo> properties = new HashMap<>();
+    public List<PropertyConfig> analysisBeanProperties(Element element) throws XmlConfigException {
+        List<PropertyConfig> properties = new ArrayList<>();
 
         NodeList elementProperties = element.getElementsByTagName("property");
         if(elementProperties == null){
@@ -104,19 +119,19 @@ public class XmlConfigReader implements ConfigReader{
         for (int i = 0; i < elementProperties.getLength(); i++) {
             Element element1 = (Element)elementProperties.item(i);
 
-            PropertyInfo propertyInfo = analysisProperty(element1);
-            properties.put(propertyInfo.getName(),propertyInfo);
+            PropertyConfig propertyConfig = analysisProperty(element1);
+            properties.add(propertyConfig);
         }
 
 
         return properties;
     }
 
-    private PropertyInfo analysisProperty(Element element) throws XmlConfigException {
+    public PropertyConfig analysisProperty(Element element) throws XmlConfigException {
         if(element == null){
             return null;
         }
-        PropertyInfo propertyInfo =  new PropertyInfo();
+        PropertyConfig propertyConfig =  new PropertyConfig();
 
         String name = element.getAttribute("name");
         if(name == null){
@@ -136,19 +151,15 @@ public class XmlConfigReader implements ConfigReader{
             throw new XmlConfigException("Property 的 值 冲突，ref 和 value 只能设置一个");
         }
 
-        propertyInfo.setName(name);
+        propertyConfig.setName(name);
         if(ref != null && !"".equals(ref)){
-            propertyInfo.setRef(ref);
+            propertyConfig.setRef(ref);
         }else{
-            propertyInfo.setValue(value);
+            propertyConfig.setValue(value);
         }
 
 
-        return propertyInfo;
+        return propertyConfig;
     }
 
-    @Override
-    public void analysis() {
-
-    }
 }

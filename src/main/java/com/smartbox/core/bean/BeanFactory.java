@@ -1,6 +1,7 @@
-package com.smartbox.bean;
+package com.smartbox.core.bean;
 
-import com.smartbox.exception.BeanFactoryException;
+import com.smartbox.core.config.BeanConfig;
+import com.smartbox.core.exception.BeanFactoryException;
 
 import java.util.List;
 
@@ -10,12 +11,9 @@ import java.util.List;
 public interface BeanFactory extends Factory{
 
 
-
-
-
     /**
      * 初始化一组对象
      * @param beanInfos 要初始化的一组对象的BeanInfo对象 的集合
      */
-    List<BeanInfo> instence(List<BeanInfo> beanInfos) throws BeanFactoryException;
+    List<BeanConfig> instence(List<BeanConfig> beanInfos) throws BeanFactoryException;
 }

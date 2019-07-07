@@ -1,6 +1,6 @@
-package com.smartbox.bean;
+package com.smartbox.core.bean;
 
-import com.smartbox.exception.FactoryException;
+import com.smartbox.core.exception.FactoryException;
 
 /**
  * 这是所有工厂类的祖先接口，定义工厂类的规范

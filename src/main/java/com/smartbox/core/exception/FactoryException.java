@@ -1,4 +1,4 @@
-package com.smartbox.exception;
+package com.smartbox.core.exception;
 
 public class FactoryException extends Exception{
     public FactoryException(){

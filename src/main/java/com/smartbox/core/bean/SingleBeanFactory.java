@@ -1,7 +1,8 @@
-package com.smartbox.bean;
+package com.smartbox.core.bean;
 
-import com.smartbox.exception.BeanFactoryException;
-import com.smartbox.exception.SimpleFactoryException;
+import com.smartbox.core.config.BeanConfig;
+import com.smartbox.core.exception.BeanFactoryException;
+import com.smartbox.core.exception.SimpleFactoryException;
 
 import java.util.List;
 
@@ -53,15 +54,15 @@ public class SingleBeanFactory implements BeanFactory{
     }
 
     @Override
-    public List<BeanInfo> instence(List<BeanInfo> beanInfos) throws BeanFactoryException {
+    public List<BeanConfig> instence(List<BeanConfig> beanConfigs) throws BeanFactoryException {
         Class clazz;
         String className = "";
         try {
-            for (BeanInfo beanInfo : beanInfos) {
-                className = beanInfo.getClassName();
+            for (BeanConfig beanConfig : beanConfigs) {
+                className = beanConfig.getClassName();
 
                 clazz = Class.forName(className);
-                beanInfo.setObject(clazz.newInstance());
+                beanConfig.setObject(clazz.newInstance());
 
             }
         } catch (ClassNotFoundException e) {
@@ -72,6 +73,6 @@ public class SingleBeanFactory implements BeanFactory{
             e.printStackTrace();
         }
 
-        return beanInfos;
+        return beanConfigs;
     }
 }
